@@ -1,0 +1,210 @@
+
+PATH="/home/disha/disha/glacier/review_2/all_maps/results_ab/sia_outputs/"
+va_files=list.files(path=PATH,
+           pattern ="^va")
+
+
+#read volume and are, add region, iter 
+data=data.frame()
+for(i in va_files){
+  
+  df=read.table(paste(PATH,i,sep=""),header = F,sep=" ")[1:500,2:3]
+  df[,3]=rep(sub("va_","",i),nrow(df))
+  data=rbind(data,df)
+  #print(df[1,1])# change the params for nls
+  #invisible(readline(prompt="Press [enter] to continue"))
+}
+data[,4]<-rep(1:500,length(va_files))
+head(data)
+tail(data)
+View(data)
+class(data$region)
+colnames(data)=c("vol","area","region","time")
+
+area_change=data.frame(region=unique(data$region),area_change=0,vol_change=0)
+class(area_change$region)
+area_change$region=as.character(area_change$region)
+class(area_change$region)
+for(i in area_change$region){
+  area_change[area_change$region==i,2]=1*(data[which(data$region==i & data$time==1),2]-data[data$region==i & data$time==500 ,2])/data[which(data$region==i & data$time==1),2]
+  area_change[area_change$region==i,3]=1*(data[which(data$region==i & data$time==1),1]-data[data$region==i & data$time==500 ,1])/data[which(data$region==i & data$time==1),1]
+  
+}
+View(area_change)
+
+#area_change[which(area_change$area_change>0.5),1]
+
+
+props=read.table("/home/disha/disha/glacier/review_2/all_maps/results_ab/props_sia_x1.txt",
+                 sep=" ",header=T,
+                 colClasses=c("character","numeric","numeric","numeric",
+                              "numeric","numeric","numeric","numeric",
+                              "numeric","numeric","numeric","numeric",
+                              "character","numeric","numeric","numeric",
+                              "numeric",
+                              "character","numeric"))
+
+colnames(props)
+#id13 tau e15 beta c17 id bt19
+class(props$rgiid)
+props$rgiid=as.character(props$rgiid)
+class(props$rgiid)
+head(props)
+View(props)
+dim(props)
+
+  
+filter=c(props[which(props$tauv>500),1],
+area_change[which(area_change$vol_change>0.5),1],
+props[which(props$tauA>500),1])
+
+length(props[which(props$tauv>500),1])
+
+length(area_change[which(area_change$area_change>0.5),1])
+length(area_change[which(area_change$vol_change>0.5),1])
+
+length(props[which(props$tauA>500),1])
+
+length(unique(filter))
+
+
+sum(props[which(props$tauA>500),3])/sum(props[,3])
+
+props[(which(props$flag<0)),1]
+
+filter[filter %in% props[(which(props$flag<0)),1]]
+
+length(which(props$flag<0))
+  
+props[which(props$rgiid %in% filter ),4]=-1
+  
+props_filtered=props[-which(props$flag<0),]
+class(props_filtered$rgiid)
+write.table(props_filtered,"props.txt",sep="\t",row.names = FALSE,col.names = F)
+write.table(props,"props_all_sia_x.txt",sep="\t",row.names = FALSE,col.names = F)
+
+dim(props_filtered)
+
+t=1
+scaling_files=va_files=c()
+scaling_files[1]="nodelete.txt"
+va_files[1]="nodelete.txt"
+for(id in props_filtered$rgiid){
+  t=t+1
+  scaling_files[t]=paste("scaling_",id,".txt",sep="")
+  va_files[t]=paste("va_",id,".txt",sep="")
+}
+
+write.table(scaling_files,"/home/disha/disha/glacier/review_2/all_maps/results_ab/output_files/scaling/nodelete.txt",
+            col.names = F,row.names = F)
+write.table(va_files,"/home/disha/disha/glacier/review_2/all_maps/results_ab/output_files/sia_500/nodelete.txt",
+            col.names = F,row.names = F)
+
+
+
+##make hypso files as req
+
+#hypso_extra=read.table("/home/disha/disha/glacier/review_2/all_maps/results_ab/id_tau_e_beta_c.txt",sep=" ",header=F,
+#                       colClasses=c("character","numeric","numeric","numeric","numeric")	)
+
+hypso_extra=props[,c("id13" ,"tau"  ,"e15"  ,"beta" ,"c17")]
+
+colnames(hypso_extra)=c("rgiid","tau","ela","beta","C")
+class(hypso_extra$rgiid)
+hypso_extra$rgiid=as.character(hypso_extra$rgiid)
+class(hypso_extra$rgiid)
+
+for(i in hypso_extra$rgiid){
+
+
+hypso=read.table(paste("/home/disha/disha/glacier/review_2/all_maps/results_ab/sia_outputs/hypso",i,sep=""),
+                 sep="\t",header=F)
+print(hypso)
+hypso$ela=hypso_extra[hypso_extra$rgiid==i,3]
+hypso$beta=hypso_extra[hypso_extra$rgiid==i,4]
+hypso$C=hypso_extra[hypso_extra$rgiid==i,5]
+
+write.table(hypso,paste("/home/disha/disha/glacier/review_2/all_maps/results_ab/filter_glaciers/hypso_arr/hypso",i,sep=""),row.names = F,col.names = F)
+}
+
+View(hypso)
+#colnames(hypso)=c("z","band_a")
+#hypso$ela=hypso_extra[hypso_extra$rgiid=="14.11566",3]
+
+#head(hypso)
+#head(hypso_extra)
+
+#scaling props
+
+props_sca=read.table("/home/disha/disha/glacier/review_2/all_maps/results_ab/props_sca.txt",
+                 sep="\t",header=T,
+                 colClasses=c("character","numeric","numeric","numeric",
+                              "numeric","numeric","numeric","numeric",
+                              "numeric","numeric","numeric","numeric"))
+class(props_sca$rgiid)
+props_sca$rgiid=as.character(props_sca$rgiid)
+class(props_sca$rgiid)
+head(props_sca)
+
+props_sca[which(props_sca$rgiid %in% filter ),4]=-1
+props_sca_filtered=props_sca[-which(props_sca$flag<0),]
+dim(props_sca_filtered)
+#View(props_sca)
+
+write.table(props_sca_filtered,"props_scaling.txt",sep="\t",row.names = FALSE,col.names = F)
+
+
+##scale files
+PATH="/home/disha/disha/glacier/review_2/all_maps/results_ab/output_files/scaling_new/"
+va_files=list.files(path=PATH,
+                    pattern ="^scaling")
+
+
+#read volume and are, add region, iter 
+data=data.frame()
+for(i in va_files){
+  
+  df=read.table(paste(PATH,i,sep=""),header = F,sep=" ")[1:500,2:3]
+  df[,3]=rep(sub("scaling_","",i),nrow(df))
+  if(df[1,2]<df[2,2]){
+    print(i)
+    print(head(df))
+    invisible(readline(prompt="Press [enter] to continue"))
+  }
+  data=rbind(data,df)
+  #print(df[1,1])# change the params for nls
+  #invisible(readline(prompt="Press [enter] to continue"))
+}
+
+
+##
+
+PATH="/home/disha/disha/glacier/review_2/all_maps/results_ab/sia_outputs/"
+va_files=list.files(path=PATH,
+                    pattern ="^hinit")
+
+
+#read volume and are, add region, iter 
+data=data.frame()
+for(i in va_files){
+  print(i)
+  df=read.table(paste(PATH,i,sep=""),header = F,sep=" ")[,3]
+  #print(head(df))
+  #df[,2]=rep(sub("scaling_","",i),nrow(df))
+  print("this is hinit")
+  print(length(which(df!=0)))
+  h=paste("hypso",gsub("hinit_","",i),sep="")
+  #print(h)
+  df1=read.table(paste(PATH,h,sep=""),header = F,sep="\t")
+  #print(df1)
+  print("this is hypso")
+  print(sum(df1[,2]))
+  
+  if(length(which(df!=0))!=sum(df1[,2])){
+    invisible(readline(prompt="Press [enter] to continue"))}
+  #print(df[1,1])# change the params for  nls
+  #invisible(readline(prompt="Press [enter] to continue"))
+}
+
+
+

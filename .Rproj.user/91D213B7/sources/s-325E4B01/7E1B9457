@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588777841238.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1182176040",
+    "id" : "7E1B9457",
+    "lastKnownWriteTime" : 1588778212,
+    "last_content_update" : 1588778212925,
+    "path" : "~/disha/glacier/review_2/all_maps/results_ab/reproducible_postSIArun/first_plot.sh",
+    "project_path" : "first_plot.sh",
+    "properties" : {
+        "cursorPosition" : "124,17",
+        "scrollLine" : "111"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sh"
+}

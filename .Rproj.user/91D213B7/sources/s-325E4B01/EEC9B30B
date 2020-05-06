@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588776650497.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EEC9B30B",
+    "lastKnownWriteTime" : 1588774894,
+    "last_content_update" : 1588774894,
+    "path" : "~/disha/glacier/review_2/all_maps/results_ab/reproducible_postSIArun/script.sh",
+    "project_path" : "script.sh",
+    "properties" : {
+        "cursorPosition" : "32,0",
+        "scrollLine" : "15"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sh"
+}

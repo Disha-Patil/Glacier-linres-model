@@ -1,0 +1,57 @@
+#sia sum
+import os
+from os import system as trm
+
+V = [0 for i in range(2001)]
+A = [0 for i in range(2001)]
+
+#with open("props.txt") as f:prop_arr = [[str(j[0])] for j in [k.split() for k in f.readlines()]]
+with open("props.txt") as f:prop_arr = [[str(j[0])] for j in [k.split() for k in f.readlines()]]
+
+for glid in prop_arr:
+    print(glid[0])
+    glid=glid[0][1:-1]
+    with open("files/sia_500/va_%s"%(glid)) as f:va_arr = [[float(j[0]), float(j[1]),float(j[2])] for j in [k.split() for k in f.readlines()]]
+    #print(va_arr)
+    if(va_arr[-1][1]>va_arr[0][1]):
+        print(f)
+        continue
+
+    #'''with open("../filtered_ids") as g: id_arr = [int(k) for k in g.readlines()]
+
+    
+    
+
+    for term in va_arr:
+        [t,v,a] = term
+        print(t)
+        t = int(t)
+        #if(t==500.00):break
+        V[t]+=v*1000000000
+        A[t]+=a*1000000
+        print(V[t])
+
+total_file = open('files/output_files/total_sia','w')
+for i in range(501):
+    total_file.write('%d %f %f\n'%(i,V[i]/1000000000,A[i]/1000000))
+total_file.close() 
+
+'''
+with open("tva_scaling.txt") as f:
+    lines = [k for k in f.readlines()]
+print(lines[0])
+
+V = [0 for i in range(150)]
+A = [0 for i in range(150)]
+
+for t in lines:
+    if(t=="\n"):continue
+    [t,v,a] = t.split(" ")
+    t,v,a = int(t),float(v),float(a)
+    V[t]+=v
+    A[t]+=a
+
+total_file = open('total_av','w')
+for i in range(150):
+    total_file.write('%d %f %f\n'%(i,V[i],A[i]))
+total_file.close()'''

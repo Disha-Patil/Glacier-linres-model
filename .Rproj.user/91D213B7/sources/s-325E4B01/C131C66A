@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588768765488.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C131C66A",
+    "lastKnownWriteTime" : 1588776365,
+    "last_content_update" : 1588776365555,
+    "path" : "~/disha/glacier/review_2/all_maps/results_ab/reproducible_postSIArun/filter_glaciers.R",
+    "project_path" : "filter_glaciers.R",
+    "properties" : {
+        "cursorPosition" : "152,28",
+        "scrollLine" : "149",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
